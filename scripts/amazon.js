@@ -1,10 +1,11 @@
-      //first step is creating the Array & objects like const product= [{}]. but we already created a js file specifically for the products. we just include it in the html file and use it here.
+//1st step is creating the Array & objects like const product= [{}]. b
+import {products} from '../data/products.js'; //importing the products array from products.js file. 
 import {cart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 
-      //second step
+      //2nd step
 let productsHTML = ''; //this is for combining all the html strimngs together. It starts as an empty string and will be filled with the html for each product.
 
-      //third step
+      //3rd step
 products.forEach(function(product) { //loop through each product & generate the html
   productsHTML += `
     <div class="product-container">
