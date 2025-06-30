@@ -29,7 +29,7 @@ products.forEach(function(product) { //loop through each product & generate the 
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-quantity-selector-${product.id}">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -67,6 +67,8 @@ document.querySelectorAll('.js-add-to-cart')
   button.addEventListener('click', function (){
     const productId = button.dataset.productId //the button.dataset is used to get the html product data. JS converts whatever is in the data-product-id(kebab-case) to button.dataset.productId(camelCase)
 
+    const productQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value); //gets the quantity selected in the dropdown. 'Number() converts to a number from DOM string.
+
     let matchingItem;
 
     //this code just stores a reference.
@@ -78,18 +80,25 @@ document.querySelectorAll('.js-add-to-cart')
 
   // this code controls the display
     if(matchingItem) { //if matchingItem is already present in the cart
-      matchingItem.quantity += 1;
+      matchingItem.productQuantity += productQuantity;
     } else {
-      cart.push({ //push the productName and quanity to the cart array. N.B cart array is in cart.js
+      cart.push({ //push the productName and produtQuantity to the cart array. N.B cart array is in cart.js
         productId : productId,
-        quantity : 1
+        productQuantity : productQuantity
       });
     };
+
+    //const productQuantity = document.querySelector(`.js-quantity-selector-${productId}`).value
+
+    //console.log(productQuantity);
+    console.log(cart);
+
+
 
     let cartQuantity = 0; //this is to count the total quantity of items in the cart
 
     cart.forEach(function(item) {
-      cartQuantity += item.quantity; //loop through each cart object and add up the quantity from one to the next.
+      cartQuantity += item.productQuantity; //loop through each cart object and add up the quantity from one to the next.
     });
 
     //making the cart icon interactive
