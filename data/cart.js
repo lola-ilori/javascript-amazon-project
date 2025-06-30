@@ -1,1 +1,1 @@
-const cart = []
+export const cart = [] //exporting the cart array to the main amazon.js file. its called module.

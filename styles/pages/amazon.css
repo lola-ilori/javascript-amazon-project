@@ -132,7 +132,7 @@
 
 .added-to-cart {
   color: rgb(6, 125, 98);
-  font-size: 16px;
+  font-size: 14px;
 
   display: flex;
   align-items: center;
@@ -153,4 +153,8 @@
   width: 100%;
   padding: 8px;
   border-radius: 50px;
+}
+
+.btn-toast-visible {
+  opacity: 1;
 }
