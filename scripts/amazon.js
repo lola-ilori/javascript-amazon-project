@@ -1,11 +1,11 @@
-//1st step is creating the Array & objects like const product= [{}]. b
+//1st step  CREATING ARRAYS & OBJECTS like const product= [{}]. 
 import {products} from '../data/products.js'; //importing the products array from products.js file. 
-import {cart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
+import {cart, addToCart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 
-      //2nd step
-let productsHTML = ''; //this is for combining all the html strimngs together. It starts as an empty string and will be filled with the html for each product.
+//2nd step
+let productsHTML = ''; //this is for combining all the html strings together. It starts as an empty string and will be filled with the html for each product.
 
-      //3rd step
+//3rd step- GENERATE THE HTML IN JS
 products.forEach(function(product) { //loop through each product & generate the html
   productsHTML += `
     <div class="product-container">
@@ -59,64 +59,54 @@ products.forEach(function(product) { //loop through each product & generate the 
   `;
 })
 
-//console.log(productsHTML)
-      //4th step - pushing the js-html file to the html
+//4th STEP - PUSHING THE js-html FILE TO THE HTML
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-      //5th step- making the add-to cart btn interactive
-document.querySelectorAll('.js-add-to-cart')
-.forEach(function(button) { //Each (button) is one button)
-    let toastTimeoutId = null; //must be declared outside the function of click.
+//5th STEP- MAKING THE add-to-cart BTN WORK- has been moved to cart.js
 
+
+//6TH STEP  UPADTING THE QUANTITY SUM IN CART ICON.
+function updateCartIcon() {
+  let cartQuantity = 0; //this is to count the total quantity of items in the cart
+
+  cart.forEach(function(item) {
+    cartQuantity += item.productQuantity; //loop through each cart object and add up the quantity from one to the next.
+  });
+
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //display in html
+}
+
+//7TH STEP SHOW THE BTN TOAST IN add to cart.
+const toastTimeouts = {}; // an empty array that we'll use below to contain productId:, timeoutId:
+function showButtonToast (productId) {
+  const btnToast = document.querySelector(`.js-btn-toast-${productId}`)
+  if(!btnToast) return; //it stops the function if the productId returns a null or something.
+
+  btnToast.classList.add('btn-toast-visible');//add a class to make toast visible by styling in css
+
+//check it previous Timeout exists and clears it
+  if(toastTimeouts[productId]) { // refer to Objects & SetTimeout in my notes.
+    clearTimeout(toastTimeouts[productId]);
+  }
+//set new timeout
+  const timeoutId = setTimeout(() => {
+    btnToast.classList.remove('btn-toast-visible');
+    toastTimeouts[productId] = null;
+  }, 2000); 
+}
+
+//OVERALL MAKING THE add-to-cart BTN INTERACTIVE
+document.querySelectorAll('.js-add-to-cart')
+.forEach(function(button) { //Each (button) is one button
   button.addEventListener('click', function (){
     const productId = button.dataset.productId //the button.dataset is used to get the html product data. JS converts whatever is in the data-product-id(kebab-case) to button.dataset.productId(camelCase)
 
-    const productQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value); //gets the quantity selected in the dropdown. 'Number() converts to a number from DOM string.
+    const productQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value); //gets the quantity selected in the dropdown. 'Number() converts to a number from DOM string
+    
+    addToCart(productId, productQuantity); //calls the addToCart function with the productId and productQuantity as arguments
+    
+    updateCartIcon();
 
-    let matchingItem;
-
-    //this code just stores a reference.
-    cart.forEach(function(item) { //to loop through cart Array. Each (item) is one object like {productName: "Toaster Black", quantity: 1}
-        if(productId === item.productId) {
-          matchingItem = item; //matchingItem becomes an object.
-      };
-    })
-
-    // this code controls the display
-    if(matchingItem) { //if matchingItem is already present in the cart
-      matchingItem.productQuantity += productQuantity;
-    } else {
-      cart.push({ //push the productName and produtQuantity to the cart array. N.B cart array is in cart.js
-        productId : productId,
-        productQuantity : productQuantity
-      });
-    };
-
-    //controls the display in the cart Icon
-    let cartQuantity = 0; //this is to count the total quantity of items in the cart
-
-    cart.forEach(function(item) {
-      cartQuantity += item.productQuantity; //loop through each cart object and add up the quantity from one to the next.
-    });
-
-    //making the cart icon interactive
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //display in html
-
-    //shows the btn toast
-    const btnToast = document.querySelector(`.js-btn-toast-${productId}`)
-    if(!btnToast) return; //it stops the function if the productId returns a null or something.
-    btnToast.classList.add('btn-toast-visible');
-
-    if(toastTimeoutId) { //check it previous Timeoutexist and stop it
-      clearTimeout(toastTimeoutId);
-    }
-  
-    const timeoutId = setTimeout(() => {
-      btnToast.classList.remove('btn-toast-visible'); 
-    }, 2000); //removes the btn toast after 2 seconds
-
-    toastTimeoutId = timeoutId; //save the timeoutID so we can stop it later
-
+    showButtonToast(productId);
   });
-  
 })
