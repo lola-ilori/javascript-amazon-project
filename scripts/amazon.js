@@ -50,7 +50,7 @@ products.forEach(function(product) { //loop through each product & generate the 
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id = "${product.id}">
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id = "${product.id}"> <!-- use the product-id instead of a product-name so as to make each product unique -->
         Add to Cart
       </button>
     </div>
@@ -61,11 +61,11 @@ products.forEach(function(product) { //loop through each product & generate the 
       //4th step - pushing the js-html file to the html
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-      //5th step- making the page interactive
+      //5th step- making the add-to cart btn interactive
 document.querySelectorAll('.js-add-to-cart')
 .forEach(function(button) { //Each (button) is one button)
   button.addEventListener('click', function (){
-    const productId = button.dataset.productId //the button.dataset is used to get the html product data. JS converts whatever is in the data-product-name(kebab-case) to button.dataset.productName(camelCase)
+    const productId = button.dataset.productId //the button.dataset is used to get the html product data. JS converts whatever is in the data-product-id(kebab-case) to button.dataset.productId(camelCase)
 
     let matchingItem;
 
@@ -85,6 +85,14 @@ document.querySelectorAll('.js-add-to-cart')
         quantity : 1
       });
     };
-    console.log(cart)
+
+    let cartQuantity = 0; //this is to count the total quantity of items in the cart
+
+    cart.forEach(function(item) {
+      cartQuantity += item.quantity; //loop through each cart object and add up the quantity from one to the next.
+    });
+
+    //making the cart icon interactive
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //display in html
   });
 });
