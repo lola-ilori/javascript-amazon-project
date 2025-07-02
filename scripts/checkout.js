@@ -1,8 +1,9 @@
 //1st step- IMPORTING ARRAYS
-import {cart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
+import {cart, removeFromCart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 import {products} from '../data/products.js'; //importing the products array from products.js file. 
 
 import {formatCurrency} from './shared-functions/money.js'; //coming from money.js where all currency formatting lies.
+
 
 //2nd step: LOOP CART ARRAY
 let cartSummaryHTML = ''; //an empty array to store html
@@ -45,7 +46,7 @@ cart.forEach(function(cartItem) {
               <span class="update-quantity-link link-primary">
                 Update
               </span>
-              <span class="delete-quantity-link link-primary">
+              <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${matchingProduct.id}">
                 Delete
               </span>
             </div>
@@ -103,3 +104,12 @@ cart.forEach(function(cartItem) {
 //6th STEP - PUSHING THE js-html FILE TO THE HTML
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
+//7th STEP - MAKING ALL LINKS INTERACTIVE
+document.querySelectorAll('.js-delete-link')
+  .forEach(function(link){ // 'link' works as for each <a> link
+    link.addEventListener('click', function(){
+      const productId = link.dataset.productId;
+      removeFromCart(productId); //call the removeFromCart function imported from cart.js
+      console.log(cart)
+    });
+  })

@@ -1,4 +1,4 @@
-export const cart = [
+export let cart = [
   {
     productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     productQuantity: 2
@@ -30,4 +30,17 @@ export function addToCart(productId, productQuantity) {
       productQuantity : productQuantity
     });
   };
+};
+
+//this code deletes product from the order summary
+export function removeFromCart(productId){ //delete the product from the cart, 'productId' means the id of the product to be deleted.
+  const newCart = []; //create a new array to hold the items that are not deleted
+
+  cart.forEach(function(cartItem){//check the cart for productID that matches the one to be deeted. 'cartItem' is each object in the cart array.
+    if(cartItem.productId !== productId) {
+      newCart.push(cartItem); //if it doesn't match, push the item to the new array so that the new array containes objects that are NOT deleted
+    };
+  });
+
+  cart = newCart; //reassign the cart varaible to the newCart created.
 };
