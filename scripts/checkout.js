@@ -23,7 +23,7 @@ cart.forEach(function(cartItem) {
 
   //5th STEP: GENERATE HTML FOR EACH CART ITEM 
   cartSummaryHTML += 
-    `<div class="cart-item-container">
+    `<div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date">
           Delivery date: Tuesday, June 21
         </div>
@@ -109,7 +109,13 @@ document.querySelectorAll('.js-delete-link')
   .forEach(function(link){ // 'link' works as for each <a> link
     link.addEventListener('click', function(){
       const productId = link.dataset.productId;
+
+      //8th STEP - DELETE ITEM FROM CART
       removeFromCart(productId); //call the removeFromCart function imported from cart.js
-      console.log(cart)
+
+      //  9th STEP -  REMOVE ITEM FROM THE PAGE/HTML
+      const cartContainer = document.querySelector(`.js-cart-item-container-${productId}`); //assign an Id to each cart container nd bring it here
+
+      cartContainer.remove(); //remove the cart container from the page
     });
   })
