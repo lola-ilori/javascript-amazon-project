@@ -65,12 +65,12 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
 //5th STEP- MAKING THE add-to-cart BTN WORK- has been moved to cart.js
 
 
-//6TH STEP  UPADTING THE QUANTITY SUM IN CART ICON.
+//6TH STEP  UPDATING THE QUANTITY SUM IN CART ICON.
 function updateCartIcon() {
   let cartQuantity = 0; //this is to count the total quantity of items in the cart
 
-  cart.forEach(function(item) {
-    cartQuantity += item.productQuantity; //loop through each cart object and add up the quantity from one to the next.
+  cart.forEach(function(cartItem) {
+    cartQuantity += cartItem.productQuantity; //loop through each cart object and add up the quantity from one to the next.
   });
 
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //display in html

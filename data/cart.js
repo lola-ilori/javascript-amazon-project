@@ -1,4 +1,13 @@
-export const cart = [] //exporting the cart array to the main amazon.js file. its called module.
+export const cart = [
+  {
+    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    productQuantity: 2
+  },
+  {
+    productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+    productQuantity: 1
+  }
+] //exporting the cart array to the main amazon.js file. its called module.
 
 //5th STEP- MAKING THE add-to-cart BTN WORK
 export function addToCart(productId, productQuantity) {
