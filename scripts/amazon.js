@@ -2,6 +2,8 @@
 import {products} from '../data/products.js'; //importing the products array from products.js file. 
 import {cart, addToCart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 
+import {formatCurrency} from './shared-functions/money.js'; //coming from money.js where all currency formatting lies.
+
 //2nd step
 let productsHTML = ''; //this is for combining all the html strings together. It starts as an empty string and will be filled with the html for each product.
 
@@ -27,7 +29,7 @@ products.forEach(function(product) { //loop through each product & generate the 
       </div>
 
       <div class="product-price">
-        $${(product.priceCents / 100).toFixed(2)}
+        $${formatCurrency(product.priceCents)}
       </div>
 
       <div class="product-quantity-container">

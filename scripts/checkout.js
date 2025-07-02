@@ -2,6 +2,8 @@
 import {cart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 import {products} from '../data/products.js'; //importing the products array from products.js file. 
 
+import {formatCurrency} from './shared-functions/money.js'; //coming from money.js where all currency formatting lies.
+
 //2nd step: LOOP CART ARRAY
 let cartSummaryHTML = ''; //an empty array to store html
 
@@ -34,7 +36,7 @@ cart.forEach(function(cartItem) {
               ${matchingProduct.name}
             </div>
             <div class="product-price">
-              $${matchingProduct.priceCents / 100} 
+              $${formatCurrency(matchingProduct.priceCents)} 
             </div>
             <div class="product-quantity">
               <span>
@@ -56,7 +58,7 @@ cart.forEach(function(cartItem) {
             <div class="delivery-option">
               <input type="radio" checked
                 class="delivery-option-input"
-                name="delivery-option-1">
+                name="delivery-option-${matchingProduct.id}">
               <div>
                 <div class="delivery-option-date">
                   Tuesday, June 21
@@ -69,7 +71,7 @@ cart.forEach(function(cartItem) {
             <div class="delivery-option">
               <input type="radio"
                 class="delivery-option-input"
-                name="delivery-option-1">
+                name="delivery-option-${matchingProduct.id}">
               <div>
                 <div class="delivery-option-date">
                   Wednesday, June 15
@@ -82,7 +84,7 @@ cart.forEach(function(cartItem) {
             <div class="delivery-option">
               <input type="radio"
                 class="delivery-option-input"
-                name="delivery-option-1">
+                name="delivery-option-${matchingProduct.id}">
               <div>
                 <div class="delivery-option-date">
                   Monday, June 13
