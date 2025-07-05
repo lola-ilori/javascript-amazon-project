@@ -42,19 +42,85 @@ export function addToCart(productId, productQuantity) {
     });
   };
 
+
   saveToStorage(); //call the function to save the cart array to local storage
 };
+
+//this code controls the increase & decrease of the product
+export function decreaseCartItem(productId) {
+  let matchingItem; //variable to hold matching productId
+
+  cart.forEach(function(cartItem){
+    if(cartItem.productId === productId) {
+      matchingItem = cartItem; //stores identical productId in matchingItem
+    }
+  });
+  
+  if(matchingItem.productQuantity > 1) {
+    matchingItem.productQuantity -= 1; //decrease the productQuantity by 1
+
+    saveToStorage(); // save the cart array to local storage
+    updateproductQuantityUI(productId, matchingItem.productQuantity); //update the UI to reflect the new quantity
+  }
+
+};
+
+export function increaseCartItem(productId) {
+  let matchingItem; //variable to hold matching productId
+
+  cart.forEach(function(cartItem){
+    if(cartItem.productId === productId) {
+      matchingItem = cartItem; //stores identical productId in matchingItem
+    }
+  });
+  
+  if(matchingItem.productQuantity <= 9) { //check if the productQuantity is greater than 0 and less than 99
+    matchingItem.productQuantity += 1; //increase the productQuantity by 1
+
+    saveToStorage(); // save the cart array to local storage
+    updateproductQuantityUI(productId, matchingItem.productQuantity); //update the UI to reflect the new quantity
+  }
+}
+
+function updateproductQuantityUI(productId, productQuantity) {
+  const cartProductQuantity = document.querySelector(`.js-cart-product-quantity[data-product-id = "${productId}"]`);
+  const minusBtn = document.querySelector(`.js-quantity-decrease[data-product-id = "${productId}"]`);
+
+  if(cartProductQuantity) {
+    cartProductQuantity.innerHTML = productQuantity; //update the quantity in the cart display
+  }
+
+  if(minusBtn) {
+    minusBtn.disabled = productQuantity <= 1; //disable the minus button if the quantity is less than or equal to 1  
+  }
+}
+
 
 //this code deletes product from the order summary
 export function removeFromCart(productId){ //delete the product from the cart, 'productId' means the id of the product to be deleted.
   const newCart = []; //create a new array to hold the items that are not deleted
 
-  cart.forEach(function(cartItem){//check the cart for productID that matches the one to be deeted. 'cartItem' is each object in the cart array.
+  cart.forEach(function(cartItem){//check the cart for productID that matches the one to be deleted. 'cartItem' is each object in the cart array.
     if(cartItem.productId !== productId) {
       newCart.push(cartItem); //if it doesn't match, push the item to the new array so that the new array containes objects that are NOT deleted
     };
   });
 
   cart = newCart; //reassign the cart varaible to the newCart created.
-  saveToStorage(); //call the function to save the cart array to local storage
+  saveToStorage(); //save the cart array to local storage
 };
+
+
+
+
+// this calcultes the cartQuantity and updates it to be used in Checkout Display
+export function calculateCartQuantity() {
+  let cartQuantity = 0; //count the total quantity of items in the cart
+
+  cart.forEach(function(cartItem){
+    cartQuantity +=cartItem.productQuantity; //add the quantity of each item in the cart to the cartQuantity
+  });
+
+  return cartQuantity; //return the total quantity of items in the cart
+}
+

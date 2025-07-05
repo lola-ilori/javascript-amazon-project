@@ -112,7 +112,7 @@
 .product-price {
   color: rgb(177, 39, 4);
   font-weight: 700;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 .product-quantity .link-primary {
@@ -208,4 +208,39 @@
 
   margin-top: 11px;
   margin-bottom: 15px;
+}
+
+.quantity-label {
+  border: 1px solid rgb(222, 222, 222);
+  padding: 10px 3px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.quantity-btn {
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(120, 120, 120);
+}
+
+.cart-product-quantity {
+  font-size: 14px;
+  padding: 0px 9px;
+  font-weight: 500;
+}
+
+.cart-increase {
+  border-left: 1px solid rgb(241, 241, 241);
+  padding-left: 10px;
+
+}
+.cart-decrease {
+  border-right: 1px solid rgb(241, 241, 241);
+  padding-right: 10px;
+}
+.quantity-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

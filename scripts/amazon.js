@@ -1,6 +1,6 @@
 //1st step  CREATING ARRAYS & OBJECTS like const product= [{}]. 
 import {products} from '../data/products.js'; //importing the products array from products.js file. 
-import {cart, addToCart} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
+import {cart, addToCart, calculateCartQuantity} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 
 import {formatCurrency} from './shared-functions/money.js'; //coming from money.js where all currency formatting lies.
 
@@ -69,14 +69,10 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
 //6TH STEP  UPDATING THE QUANTITY SUM IN CART ICON.
 function updateCartIcon() {
-  let cartQuantity = 0; //this is to count the total quantity of items in the cart
+  document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity(); //display in html
+} 
 
-  cart.forEach(function(cartItem) {
-    cartQuantity += cartItem.productQuantity; //loop through each cart object and add up the quantity from one to the next.
-  });
-
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //display in html
-}
+updateCartIcon(); //update the cart icon quantity on page load.
 
 //7TH STEP SHOW THE BTN TOAST IN add to cart.
 const toastTimeouts = {}; // an empty array that we'll use below to contain productId:, timeoutId:
@@ -108,7 +104,7 @@ document.querySelectorAll('.js-add-to-cart')
     addToCart(productId, productQuantity); //calls the addToCart function with the productId and productQuantity as arguments
     
     updateCartIcon();
-
+    
     showButtonToast(productId);
   });
 })
