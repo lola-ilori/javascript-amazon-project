@@ -125,5 +125,21 @@ export function calculateCartQuantity() {
   });
 
   return cartQuantity; //return the total quantity of items in the cart
+};
+
+//this updates the deliveryOptionId in the cart array
+export function updateDeliveryOption(productId, deliveryOptionId) {
+  //duplicate code from addToCart function
+  let matchingItem;
+  
+  cart.forEach(function(cartItem) { 
+    if(cartItem.productId === productId) { 
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.deliveryOptionId = deliveryOptionId; //set the product delivery option to this new deliveryid instead of the existing one
+
+  saveToStorage(); //save the cart array to local storage
 }
 

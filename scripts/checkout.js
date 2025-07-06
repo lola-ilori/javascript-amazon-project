@@ -1,5 +1,5 @@
 //1st step- IMPORTING ARRAYS
-import {cart, removeFromCart, calculateCartQuantity, decreaseCartItem, increaseCartItem} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
+import {cart, removeFromCart, calculateCartQuantity, decreaseCartItem, increaseCartItem, updateDeliveryOption} from '../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 import {products} from '../data/products.js'; //importing the products array from products.js file. 
 import {formatCurrency} from './shared-functions/money.js'; //coming from money.js where all currency formatting lies.
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
@@ -100,7 +100,7 @@ const isChecked = deliveryOption.id === cartItem.deliveryOptionId; //check if th
 //GENERATE THE HTML FOR DELIVERY OPTIONS
     html += 
       `
-      <div class="delivery-option">
+      <div class="delivery-option js-delivery-option" data-product-id = "${matchingProduct.id}" data-delivery-option-id = "${deliveryOption.id}">
         <input type="radio"
         ${isChecked ? 'checked' : ''}//
           class="delivery-option-input"
@@ -177,3 +177,12 @@ function cartCount() {
   document.querySelector('.js-total-checkout-items').innerHTML =
     count < 2 ? `${count} item` : `${count} items`;
 }
+
+//11th STEP - UPDATE DELIVERY OPTION
+document.querySelectorAll('.js-delivery-option')//for every click, update the cart with the deliveryID
+  .forEach(function(element) {
+    element.addEventListener('click', function() {
+      const {productId, deliveryOptionId} = element.dataset //use the shorthand ppty to get the dataset from html 
+      updateDeliveryOption(productId, deliveryOptionId);
+  });
+});
