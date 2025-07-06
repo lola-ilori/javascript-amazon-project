@@ -4,11 +4,13 @@ if(!cart) {//if the cart array is empty, use this default array
   cart = [
     {
       productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-      productQuantity: 2
+      productQuantity: 2,
+      deliveryOptionId: '1' //add a deliveryOptions id to each placeholder product
     },
     {
       productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-      productQuantity: 1
+      productQuantity: 1,
+      deliveryOptionId: '2' //add a deliveryOptions id to each placeholder product
     }
   ]; 
 }//exporting the cart array to the amazon.js,checkout file. its called module.
@@ -36,9 +38,10 @@ export function addToCart(productId, productQuantity) {
   if(matchingItem) { //if matchingItem is already present in the cart
     matchingItem.productQuantity += productQuantity;
   } else {
-    cart.push({ //push the productName and produtQuantity to the cart array. N.B cart array is in cart.js
+    cart.push({ //push the productName, produtQuantity &deliveryOption to the cart array. N.B cart array is in cart.js
       productId : productId,
-      productQuantity : productQuantity
+      productQuantity : productQuantity,
+      deliveryOptionId: '1' //default delivery option id
     });
   };
 
