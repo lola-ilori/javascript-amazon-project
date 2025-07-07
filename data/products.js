@@ -1,4 +1,17 @@
- export const products = [
+//this function finds the product with the matching ID and can be used to retrieve all product details
+export function getProduct(productId) {
+  let matchingProduct; //an empty varaible waitiing to be house objects/anything
+
+  products.forEach(function(product){ //product represent each object in products array
+    if(product.id === productId) {
+      matchingProduct = product; //save the product object that matches the cartItem productId into the matchingProduct. N:B we are saving each objects not the whole array.
+    }
+  });
+
+  return matchingProduct; //always include return in the function
+} 
+ 
+export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
