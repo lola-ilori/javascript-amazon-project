@@ -4,6 +4,7 @@ import {products, getProduct} from '../../data/products.js'; //importing the pro
 import {formatCurrency} from '../shared-functions/money.js'; //coming from money.js where all currency formatting lies.
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {renderPaymentSummary} from './paymentSummary.js';
 
 //2nd step: LOOP CART ARRAY
  export function renderOrderSummary() {
@@ -127,6 +128,7 @@ import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js
         decreaseCartItem(productId); //call the decreaseCartItem function imported from cart.js
         
         cartCount();
+        renderPaymentSummary(); //call the renderPaymentSummary function to update the payment summary after decreasing the item quantity
       });
     });
 
@@ -138,6 +140,7 @@ import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js
         increaseCartItem(productId); //call the decreaseCartItem function imported from cart.js
         
         cartCount();
+        renderPaymentSummary(); //call the renderPaymentSummary function to update the payment summary after increasing the item quantity
       })
     })
 
@@ -155,6 +158,9 @@ import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js
 
         cartCount(); //update the checkOUT Item count
         cartContainer.remove(); //remove the cart container from the page
+
+        //10th STEP - UPDATE THE PAYMENT SUMMARY
+        renderPaymentSummary(); //call the renderPaymentSummary function to update the payment summary after removing the item from the cart
       });
     });
 
@@ -172,6 +178,7 @@ import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js
         const {productId, deliveryOptionId} = element.dataset //use the shorthand ppty to get the dataset from html 
         updateDeliveryOption(productId, deliveryOptionId);
         renderOrderSummary(); //call the renderOrderSummary function to update the order summary with the new delivery option
+        renderPaymentSummary(); //call the renderPaymentSummary function to update the payment summary with the new delivery option
     });
   });
 };
