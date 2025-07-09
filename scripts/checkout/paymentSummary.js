@@ -1,5 +1,5 @@
 //1 STEP: IMPORT ALL THE FUNCTIONS & ARRAY NEEDED
-import { cart } from "../../data/cart.js";
+import { cart, calculateCartQuantity } from "../../data/cart.js";
 import { formatCurrency } from "../shared-functions/money.js";
 import { products, getProduct } from "../../data/products.js";
 import { getDeliveryOption, deliveryOptions } from "../../data/deliveryOptions.js"; 
@@ -49,7 +49,7 @@ export function renderPaymentSummary() {
       </div>
 
       <div class="payment-summary-row">
-        <div>Items (3):</div>
+        <div>Items (${calculateCartQuantity()}):</div>
         <div class="payment-summary-money">$${formatCurrency(totalProductPriceCents)}</div>
       </div>
 

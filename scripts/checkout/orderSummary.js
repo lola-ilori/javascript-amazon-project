@@ -2,8 +2,7 @@
 import {cart, removeFromCart, calculateCartQuantity, decreaseCartItem, increaseCartItem, updateDeliveryOption} from '../../data/cart.js'; //importing the cart array from cart.js file. This is where the cart items are stored.
 import {products, getProduct} from '../../data/products.js'; //importing the products array from products.js file. 
 import {formatCurrency} from '../shared-functions/money.js'; //coming from money.js where all currency formatting lies.
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {renderPaymentSummary} from './paymentSummary.js';
 
 //2nd step: LOOP CART ARRAY
@@ -21,10 +20,8 @@ import {renderPaymentSummary} from './paymentSummary.js';
     const deliveryOptionId = cartItem.deliveryOptionId; //get the deliveryOptionId from the cartItem to be used below
     const matchingDeliveryOption = getDeliveryOption(deliveryOptionId); //use the getDeliveryOption function to get the delivery option details
 
-    //formula imported from deliveryOptionHTML function
-    const today = dayjs();
-    const deliveryDate = today.add(matchingDeliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D'); 
+    //imported from deliveryOptions.js and dateString is wrapped in object.
+    const {dateString} = calculateDeliveryDate(matchingDeliveryOption); //calculate the delivery date using the deliveryOptionId 
     
 
     //5th STEP: GENERATE HTML FOR EACH CART ITEM 
@@ -77,18 +74,15 @@ import {renderPaymentSummary} from './paymentSummary.js';
   //generate the deliveryOptions html and store in a function
   function deliveryOptionsHTML(matchingProduct, cartItem) {
     let html = '';
-    deliveryOptions.forEach(function(deliveryOption) {
-      const today = dayjs(); // today' date formula
-      const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');//adding today to no of days
-      const dateString = deliveryDate.format('dddd, MMMM D'); //dislaying into a readable format
-      const priceString = deliveryOption.priceCents === 0 ? 'FREE Shipping' : `$${formatCurrency(deliveryOption.priceCents)} - Shipping`; //if the priceCents is 0, display FREE, else display the price in dollars
+    deliveryOptions.forEach(function(matchingDeliveryOption) {
+      const {dateString, priceString} = calculateDeliveryDate(matchingDeliveryOption); //imported from deliveryOptions.js
 
-    const isChecked = deliveryOption.id === cartItem.deliveryOptionId; //check if the deliveryOption id matches the cartItem deliveryOptionId in addToCart function
+      const isChecked = matchingDeliveryOption.id === cartItem.deliveryOptionId; //check if the deliveryOption id matches the cartItem deliveryOptionId in addToCart function
 
     //GENERATE THE HTML FOR DELIVERY OPTIONS
       html += 
         `
-        <div class="delivery-option js-delivery-option" data-product-id = "${matchingProduct.id}" data-delivery-option-id = "${deliveryOption.id}">
+        <div class="delivery-option js-delivery-option" data-product-id = "${matchingProduct.id}" data-delivery-option-id = "${matchingDeliveryOption.id}">
           <input type="radio"
           ${isChecked ? 'checked' : ''}//
             class="delivery-option-input"
@@ -153,19 +147,19 @@ import {renderPaymentSummary} from './paymentSummary.js';
         //8th STEP - DELETE ITEM FROM CART
         removeFromCart(productId); //call the removeFromCart function imported from cart.js
 
-        //  9th STEP -  REMOVE ITEM FROM THE PAGE/HTML
-        const cartContainer = document.querySelector(`.js-cart-item-container-${productId}`); //assign an Id to each cart container nd bring it here
-
-        cartCount(); //update the checkOUT Item count
-        cartContainer.remove(); //remove the cart container from the page
-
-        //10th STEP - UPDATE THE PAYMENT SUMMARY
+        //12th STEP -  REMOVE ITEM FROM THE PAGE/HTML by rebuilding the UI
+        renderOrderSummary();//regenerate the order summary after removing the item from the cart
+    
+        //13th STEP - UPDATE THE PAYMENT SUMMARY
         renderPaymentSummary(); //call the renderPaymentSummary function to update the payment summary after removing the item from the cart
+
+        //9th STEP- UPDATE THE CHECKOUT ITEM COUNT
+        cartCount();
       });
     });
 
   //10th STEP - UPDATE THE TOTAL CHECKOUT ITEM COUNT
-  function cartCount() {
+   function cartCount() {
     const count = calculateCartQuantity();//store it in a variable cos we re using it twice.
     document.querySelector('.js-total-checkout-items').innerHTML =
       count < 2 ? `${count} item` : `${count} items`;
