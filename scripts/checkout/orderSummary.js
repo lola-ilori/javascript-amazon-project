@@ -5,6 +5,7 @@ import {formatCurrency} from '../shared-functions/money.js'; //coming from money
 import { deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {renderPaymentSummary} from './paymentSummary.js';
 
+//loadFromStorage(); //load the cart array from local storage when the page loads
 //2nd step: LOOP CART ARRAY
  export function renderOrderSummary() {
   let cartSummaryHTML = ''; //an empty array to store html
@@ -14,6 +15,7 @@ import {renderPaymentSummary} from './paymentSummary.js';
     const productId = cartItem.productId
 
     //4th step: EXTRACTING ALL INFO ON PRODUCT
+
     const matchingProduct = getProduct(productId) //utilises the function from product.js
 
     //EXTRACTING ALL INFO ON DELIVERYOPTIONS
